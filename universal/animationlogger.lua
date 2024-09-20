@@ -5,7 +5,9 @@ local Players = game:GetService("Players")
 local clipboard = setclipboard or toclipboard or syn.write_clipboard
 local floor = math.floor
 local LocalPlayer = Players.LocalPlayer
-local Character = LocalPlayer.Character
+local TargetPlayer = Players:FindFirstChild("USERNAME")
+if not TargetPlayer then TargetPlayer = LocalPlayer end
+local Character = TargetPlayer.Character
 local Humanoid = Character:WaitForChild("Humanoid")
 local AnimationExclusions = {}
 local RawCodeValue = ""
@@ -239,6 +241,7 @@ ClearLogs.Activated:Connect(function()
     CurrentSelectedAnimation = nil
     CodeLabel.Text = ""
     AnimationExclusions = {}
+	AnimationCache = {}
     for _, child in pairs(AnimationScroller:GetChildren()) do
         if child:IsA("TextButton") then
             child:Destroy()
@@ -256,7 +259,7 @@ PlayAnimation.Activated:Connect(function()
         local anim = Instance.new("Animation")
         anim.AnimationId = CurrentSelectedAnimation.id
         
-        CurrentRunningAnimation = Humanoid:LoadAnimation(anim)
+        CurrentRunningAnimation = LocalPlayer.Character.Humanoid:LoadAnimation(anim)
         CurrentRunningAnimation:Play()
     end
 end)
@@ -295,7 +298,7 @@ CloseButton.Activated:Connect(function()
     _G.GUI = nil
 end)
 
-OldCharAddedEvent = LocalPlayer.CharacterAdded:Connect(function(Char)
+OldCharAddedEvent = TargetPlayer.CharacterAdded:Connect(function(Char)
     Character = Char
     Humanoid = Char:WaitForChild("Humanoid")
     if OldPlayAnimationEvent then
