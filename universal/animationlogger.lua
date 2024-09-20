@@ -1,11 +1,12 @@
 if _G.GUI then _G.GUI:Destroy() end 
+local Username = ({...})[1] or ""
 local CoreGui = (gethui and gethui()) or (cloneref and cloneref(game:GetService("CoreGui"))) or game:GetService("CoreGui")
 local Players = game:GetService("Players")
 
 local clipboard = setclipboard or toclipboard or syn.write_clipboard
 local floor = math.floor
 local LocalPlayer = Players.LocalPlayer
-local TargetPlayer = Players:FindFirstChild("USERNAME")
+local TargetPlayer = Players:FindFirstChild(Username) -- Leave Blank or Invalid to be your player
 if not TargetPlayer then TargetPlayer = LocalPlayer end
 local Character = TargetPlayer.Character
 local Humanoid = Character:WaitForChild("Humanoid")
@@ -38,9 +39,11 @@ local Exclude = Instance.new("TextButton")
 local CloseButton = Instance.new("TextButton")
 local PlayAnimation = Instance.new("TextButton")
 local StopAnimation = Instance.new("TextButton")
+local ClearExclusions = Instance.new("TextButton")
 local UICorner_3 = Instance.new("UICorner")
 local Unexclude = Instance.new("TextButton")
 local UICorner_4 = Instance.new("UICorner")
+local UICorner_5 = Instance.new("UICorner")
 
 --Properties:
 
@@ -52,6 +55,7 @@ AnimationScroller.Parent = Main
 AnimationScroller.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
 AnimationScroller.Position = UDim2.new(0.02, 0, 0.025, 0)
 AnimationScroller.Size = UDim2.new(0, 120, 0, 230)
+AnimationScroller.AutomaticSize = Enum.AutomaticSize.Y
 
 CloseButton.Name = "CloseButton"
 CloseButton.Parent = Main
@@ -115,6 +119,19 @@ ClearLogs.Font = Enum.Font.SourceSansBold
 ClearLogs.TextScaled = true
 ClearLogs.Text = "Clear Logs"
 ClearLogs.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+ClearExclusions.Parent = ButtonFrame
+ClearExclusions.BackgroundColor3 = Color3.fromRGB(131, 131, 131)
+ClearExclusions.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ClearExclusions.Position = UDim2.new(0.4, 0, 0.6, 0)
+ClearExclusions.Size = UDim2.new(0, 65, 0, 18)
+ClearExclusions.Font = Enum.Font.SourceSansBold
+ClearExclusions.TextScaled = true
+ClearExclusions.Text = "Clear Exclusions"
+ClearExclusions.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+UICorner_5.CornerRadius = UDim.new(0, 2)
+UICorner_5.Parent = ClearExclusions
 
 UICorner_2.CornerRadius = UDim.new(0, 2)
 UICorner_2.Parent = ClearLogs
@@ -237,10 +254,13 @@ Unexclude.Activated:Connect(function()
     end
 end)
 
+ClearExclusions.Activated:Connect(function()
+    AnimationExclusions = {}
+end)
+
 ClearLogs.Activated:Connect(function()
     CurrentSelectedAnimation = nil
     CodeLabel.Text = ""
-    AnimationExclusions = {}
 	AnimationCache = {}
     for _, child in pairs(AnimationScroller:GetChildren()) do
         if child:IsA("TextButton") then
