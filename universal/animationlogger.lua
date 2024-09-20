@@ -54,10 +54,10 @@ Main.Size = UDim2.new(0, 364, 0, 242)
 AnimationScroller.Parent = Main
 AnimationScroller.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
 AnimationScroller.Position = UDim2.new(0.02, 0, 0.025, 0)
-AnimationScroller.Size = UDim2.new(0, 120, 0, 230)
 AnimationScroller.AutomaticSize = Enum.AutomaticSize.Y
+AnimationScroller.Size = UDim2.new(0.33, 0, 0.95, 0)
+AnimationScroller.CanvasSize = UDim2.new(0, 0, 0, 0)
 
-CloseButton.Name = "CloseButton"
 CloseButton.Parent = Main
 CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 CloseButton.RichText = true
