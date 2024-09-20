@@ -42,7 +42,6 @@ local UICorner_4 = Instance.new("UICorner")
 
 --Properties:
 
-Main.Parent = game.StarterGui.ScreenGui
 Main.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 Main.Position = UDim2.new(0.23, 0, 0.25, 0)
 Main.Size = UDim2.new(0, 364, 0, 242)
