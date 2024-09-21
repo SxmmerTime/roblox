@@ -10,15 +10,16 @@ local TargetPlayer = Players:FindFirstChild(Username) -- Leave Blank or Invalid 
 if not TargetPlayer then TargetPlayer = LocalPlayer end
 local Character = TargetPlayer.Character
 local Humanoid = Character:WaitForChild("Humanoid")
-local AnimationExclusions = {}
 local RawCodeValue = ""
 local CurrentSelectedAnimation = nil
-local OldCharAddedEvent = nil
-local OldPlayAnimationEvent = nil
 local CurrentRunningAnimation = nil
+local CurrentTestingAnimation = nil
+local OldPlayAnimationEvent = nil
+local OldCharAddedEvent = nil
+local AnimationExclusions = {}
+local AnimationCache = {}
 local ObjectCache = {}
 local VarCache = {}
-local AnimationCache = {}
 
 assert(clipboard, "Executor must have clipboard function to work")
 
@@ -27,31 +28,105 @@ local MainScreenGui = Instance.new("ScreenGui")
 _G.GUI = MainScreenGui
 local Main = Instance.new("Frame")
 local AnimationScroller = Instance.new("ScrollingFrame")
-local CodeLabel = Instance.new("TextLabel")
-local UIListLayout = Instance.new("UIListLayout")
-local ButtonFrame = Instance.new("Frame")
 local UIListLayout_2 = Instance.new("UIListLayout")
-local CopyCode = Instance.new("TextButton")
-local UICorner = Instance.new("UICorner")
-local ClearLogs = Instance.new("TextButton")
-local UICorner_2 = Instance.new("UICorner")
-local Exclude = Instance.new("TextButton")
-local UICorner_3 = Instance.new("UICorner")
-local Unexclude = Instance.new("TextButton")
-local UICorner_4 = Instance.new("UICorner")
-local PlayAnimation = Instance.new("TextButton")
-local StopAnimation = Instance.new("TextButton")
+local ClearExclusions = Instance.new("TextButton")
 local CopyAnimationID = Instance.new("TextButton")
+local UIListLayout = Instance.new("UIListLayout")
+local PlayAnimation = Instance.new("TextButton")
+local StopAnimationtest = Instance.new("TextButton")
+local StopAnimation = Instance.new("TextButton")
+local TestAnimation = Instance.new("TextButton")
+local AnimationSpeed = Instance.new("TextBox")
+local CloseButton = Instance.new("TextButton")
+local AnimationTester = Instance.new("Frame")
+local AnimationBox = Instance.new("TextBox")
+local Unexclude = Instance.new("TextButton")
+local ClearLogs = Instance.new("TextButton")
+local CopyCode = Instance.new("TextButton")
+local CodeLabel = Instance.new("TextLabel")
+local UICorner_3 = Instance.new("UICorner")
+local UICorner_4 = Instance.new("UICorner")
 local UICorner_5 = Instance.new("UICorner")
 local UICorner_7 = Instance.new("UICorner")
-local ClearExclusions = Instance.new("TextButton")
 local UICorner_6 = Instance.new("UICorner")
-local CloseButton = Instance.new("TextButton")
+local UICorner_2 = Instance.new("UICorner")
+local UICorner_22 = Instance.new("UICorner")
+local UIC2orner_3 = Instance.new("UICorner")
+local Exclude = Instance.new("TextButton")
+local ButtonFrame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local UICorner22222 = Instance.new("UICorner")
+local UICorner22 = Instance.new("UICorner")
+
 Main.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 Main.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Main.BorderSizePixel = 0
 Main.Position = UDim2.new(0, 311, 0, 145)
 Main.Size = UDim2.new(0, 490, 0, 282)
+
+AnimationTester.Parent = Main
+AnimationTester.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+AnimationTester.Position = UDim2.new(1, 0, 0.04, 0)
+AnimationTester.Size = UDim2.new(0, 192, 0, 113)
+
+StopAnimationtest.Parent = AnimationTester
+StopAnimationtest.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+StopAnimationtest.Position = UDim2.new(0.82, 0, 0.735, 0)
+StopAnimationtest.Size = UDim2.new(0, 18, 0, 18)
+StopAnimationtest.Text = "X"
+StopAnimationtest.TextColor3 = Color3.fromRGB(255, 255, 255)
+StopAnimationtest.TextScaled = true
+StopAnimationtest.TextSize = 14.000
+
+UICorner22.CornerRadius = UDim.new(0, 2)
+UICorner22.Parent = StopAnimationtest
+
+AnimationBox.Parent = AnimationTester
+AnimationBox.BackgroundColor3 = Color3.fromRGB(71, 71, 71)
+AnimationBox.BackgroundTransparency = 0.300
+AnimationBox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+AnimationBox.BorderSizePixel = 0
+AnimationBox.Position = UDim2.new(0.0625, 0, 0.09, 0)
+AnimationBox.Size = UDim2.new(0, 170, 0, 28)
+AnimationBox.Font = Enum.Font.Code
+AnimationBox.PlaceholderText = "rbxassetid://172372914"
+AnimationBox.Text = ""
+AnimationBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+AnimationBox.TextScaled = true
+AnimationBox.TextSize = 14.000
+
+UICorner22222.Parent = AnimationBox
+
+AnimationSpeed.Parent = AnimationTester
+AnimationSpeed.BackgroundColor3 = Color3.fromRGB(71, 71, 71)
+AnimationSpeed.BackgroundTransparency = 0.300
+AnimationSpeed.BorderColor3 = Color3.fromRGB(0, 0, 0)
+AnimationSpeed.BorderSizePixel = 0
+AnimationSpeed.Position = UDim2.new(0.3, 0, 0.4, 0)
+AnimationSpeed.Size = UDim2.new(0, 76, 0, 28)
+AnimationSpeed.Font = Enum.Font.Code
+AnimationSpeed.PlaceholderText = "1"
+AnimationSpeed.Text = ""
+AnimationSpeed.TextColor3 = Color3.fromRGB(255, 255, 255)
+AnimationSpeed.TextScaled = true
+AnimationSpeed.TextSize = 14.000
+
+UICorner_22.Parent = AnimationSpeed
+
+TestAnimation.Parent = AnimationTester
+TestAnimation.BackgroundColor3 = Color3.fromRGB(75, 75, 75)
+TestAnimation.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TestAnimation.BorderSizePixel = 0
+TestAnimation.Position = UDim2.new(0.25, 0, 0.73, 0)
+TestAnimation.Size = UDim2.new(0, 96, 0, 18)
+TestAnimation.Font = Enum.Font.Unknown
+TestAnimation.Text = "Test Animation"
+TestAnimation.TextColor3 = Color3.fromRGB(255, 255, 255)
+TestAnimation.TextScaled = true
+TestAnimation.TextSize = 14.000
+
+UIC2orner_3.CornerRadius = UDim.new(0, 2)
+UIC2orner_3.Parent = TestAnimation
 
 AnimationScroller.Parent = Main
 AnimationScroller.Active = true
@@ -78,7 +153,6 @@ CodeLabel.TextScaled = true
 CodeLabel.Text = "lol hello"
 CodeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 CodeLabel.TextSize = 18.000
-CodeLabel.TextWrapped = true
 CodeLabel.TextXAlignment = Enum.TextXAlignment.Left
 CodeLabel.RichText = true
 CodeLabel.TextYAlignment = Enum.TextYAlignment.Top
@@ -106,7 +180,6 @@ CopyCode.Text = "Copy Code"
 CopyCode.TextColor3 = Color3.fromRGB(255, 255, 255)
 CopyCode.TextScaled = true
 CopyCode.TextSize = 14.000
-CopyCode.TextWrapped = true
 
 UICorner.CornerRadius = UDim.new(0, 2)
 UICorner.Parent = CopyCode
@@ -121,7 +194,6 @@ ClearLogs.Text = "Clear Logs"
 ClearLogs.TextColor3 = Color3.fromRGB(255, 255, 255)
 ClearLogs.TextScaled = true
 ClearLogs.TextSize = 14.000
-ClearLogs.TextWrapped = true
 
 UICorner_2.CornerRadius = UDim.new(0, 2)
 UICorner_2.Parent = ClearLogs
@@ -136,7 +208,6 @@ Exclude.Text = "Exclude"
 Exclude.TextColor3 = Color3.fromRGB(255, 255, 255)
 Exclude.TextScaled = true
 Exclude.TextSize = 14.000
-Exclude.TextWrapped = true
 
 UICorner_3.CornerRadius = UDim.new(0, 2)
 UICorner_3.Parent = Exclude
@@ -151,7 +222,6 @@ Unexclude.Text = "Unexclude"
 Unexclude.TextColor3 = Color3.fromRGB(255, 255, 255)
 Unexclude.TextScaled = true
 Unexclude.TextSize = 14.000
-Unexclude.TextWrapped = true
 
 UICorner_4.CornerRadius = UDim.new(0, 2)
 UICorner_4.Parent = Unexclude
@@ -166,7 +236,6 @@ PlayAnimation.Text = "Play"
 PlayAnimation.TextColor3 = Color3.fromRGB(255, 255, 255)
 PlayAnimation.TextScaled = true
 PlayAnimation.TextSize = 14.000
-PlayAnimation.TextWrapped = true
 
 StopAnimation.BackgroundColor3 = Color3.fromRGB(131, 131, 131)
 StopAnimation.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -178,7 +247,6 @@ StopAnimation.Text = "Stop"
 StopAnimation.TextColor3 = Color3.fromRGB(255, 255, 255)
 StopAnimation.TextScaled = true
 StopAnimation.TextSize = 14.000
-StopAnimation.TextWrapped = true
 
 CopyAnimationID.BackgroundColor3 = Color3.fromRGB(131, 131, 131)
 CopyAnimationID.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -190,7 +258,6 @@ CopyAnimationID.Text = "Copy ID"
 CopyAnimationID.TextColor3 = Color3.fromRGB(255, 255, 255)
 CopyAnimationID.TextScaled = true
 CopyAnimationID.TextSize = 14.000
-CopyAnimationID.TextWrapped = true
 
 UICorner_7.CornerRadius = UDim.new(0, 2)
 UICorner_7.Parent = CopyAnimationID
@@ -212,7 +279,6 @@ ClearExclusions.Text = "Clear Exclusions"
 ClearExclusions.TextColor3 = Color3.fromRGB(255, 255, 255)
 ClearExclusions.TextScaled = true
 ClearExclusions.TextSize = 14.000
-ClearExclusions.TextWrapped = true
 
 UICorner_6.CornerRadius = UDim.new(0, 2)
 UICorner_6.Parent = ClearExclusions
@@ -380,10 +446,47 @@ CloseButton.Activated:Connect(function()
         CurrentRunningAnimation:Stop()
         CurrentRunningAnimation = nil
     end
+    
+    if CurrentTestingAnimation then
+        CurrentTestingAnimation:Stop()
+        CurrentTestingAnimation = nil
+    end
 
     CurrentSelectedAnimation = nil
     MainScreenGui:Destroy()
     _G.GUI = nil
+end)
+
+local ToAssetId = function(id)
+	id = tostring(id)
+    local assetString = (id:sub(1, 4) == 'http' and id) or (id:match("rbxassetid://%d+") == id and id) or 'rbxassetid://' .. id
+	return assetString, assetString:match("rbxassetid://%d+") == assetString
+end
+
+TestAnimation.Activated:Connect(function()
+    local AnimationID, ValidAsset = ToAssetId(AnimationBox.Text or "")
+    local AnimationSpeed = tonumber(AnimationSpeed.Text) or 1
+
+    if CurrentTestingAnimation then
+        CurrentTestingAnimation:Stop()
+    end
+
+    if ValidAsset and AnimationID and AnimationSpeed then
+        local animation = Instance.new("Animation")
+        animation.AnimationId = AnimationID
+        
+        local LoadedTrack = Humanoid:LoadAnimation(animation)
+        LoadedTrack:Play()
+        LoadedTrack:AdjustSpeed(AnimationSpeed)
+        CurrentTestingAnimation = LoadedTrack
+    end
+end)
+
+StopAnimationtest.Activated:Connect(function()
+    if CurrentTestingAnimation then
+        CurrentTestingAnimation:Stop()
+        CurrentTestingAnimation = nil
+    end
 end)
 
 OldCharAddedEvent = TargetPlayer.CharacterAdded:Connect(function(Char)
