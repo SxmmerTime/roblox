@@ -41,7 +41,9 @@ local Unexclude = Instance.new("TextButton")
 local UICorner_4 = Instance.new("UICorner")
 local PlayAnimation = Instance.new("TextButton")
 local StopAnimation = Instance.new("TextButton")
+local CopyAnimationID = Instance.new("TextButton")
 local UICorner_5 = Instance.new("UICorner")
+local UICorner_7 = Instance.new("UICorner")
 local ClearExclusions = Instance.new("TextButton")
 local UICorner_6 = Instance.new("UICorner")
 local CloseButton = Instance.new("TextButton")
@@ -59,6 +61,7 @@ AnimationScroller.BorderSizePixel = 0
 AnimationScroller.Position = UDim2.new(0, 8, 0, 5)
 AnimationScroller.Size = UDim2.new(0, 128, 0, 268)
 AnimationScroller.CanvasSize = UDim2.new(0, 0, 0, 0)
+AnimationScroller.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
 UIListLayout.Parent = AnimationScroller
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -88,13 +91,11 @@ ButtonFrame.BorderSizePixel = 0
 ButtonFrame.Position = UDim2.new(0, 146, 0, 164)
 ButtonFrame.Size = UDim2.new(0, 334, 0, 109)
 
-UIListLayout_2.Parent = ButtonFrame
 UIListLayout_2.FillDirection = Enum.FillDirection.Horizontal
 UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
 UIListLayout_2.Padding = UDim.new(0, 11)
 UIListLayout_2.Wraps = true
 
-CopyCode.Parent = ButtonFrame
 CopyCode.BackgroundColor3 = Color3.fromRGB(131, 131, 131)
 CopyCode.BorderColor3 = Color3.fromRGB(0, 0, 0)
 CopyCode.BorderSizePixel = 0
@@ -110,7 +111,6 @@ CopyCode.TextWrapped = true
 UICorner.CornerRadius = UDim.new(0, 2)
 UICorner.Parent = CopyCode
 
-ClearLogs.Parent = ButtonFrame
 ClearLogs.BackgroundColor3 = Color3.fromRGB(131, 131, 131)
 ClearLogs.BorderColor3 = Color3.fromRGB(0, 0, 0)
 ClearLogs.BorderSizePixel = 0
@@ -126,7 +126,6 @@ ClearLogs.TextWrapped = true
 UICorner_2.CornerRadius = UDim.new(0, 2)
 UICorner_2.Parent = ClearLogs
 
-Exclude.Parent = ButtonFrame
 Exclude.BackgroundColor3 = Color3.fromRGB(131, 131, 131)
 Exclude.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Exclude.BorderSizePixel = 0
@@ -142,7 +141,6 @@ Exclude.TextWrapped = true
 UICorner_3.CornerRadius = UDim.new(0, 2)
 UICorner_3.Parent = Exclude
 
-Unexclude.Parent = ButtonFrame
 Unexclude.BackgroundColor3 = Color3.fromRGB(131, 131, 131)
 Unexclude.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Unexclude.BorderSizePixel = 0
@@ -158,7 +156,6 @@ Unexclude.TextWrapped = true
 UICorner_4.CornerRadius = UDim.new(0, 2)
 UICorner_4.Parent = Unexclude
 
-PlayAnimation.Parent = ButtonFrame
 PlayAnimation.BackgroundColor3 = Color3.fromRGB(131, 131, 131)
 PlayAnimation.BorderColor3 = Color3.fromRGB(0, 0, 0)
 PlayAnimation.BorderSizePixel = 0
@@ -171,7 +168,6 @@ PlayAnimation.TextScaled = true
 PlayAnimation.TextSize = 14.000
 PlayAnimation.TextWrapped = true
 
-StopAnimation.Parent = ButtonFrame
 StopAnimation.BackgroundColor3 = Color3.fromRGB(131, 131, 131)
 StopAnimation.BorderColor3 = Color3.fromRGB(0, 0, 0)
 StopAnimation.BorderSizePixel = 0
@@ -184,13 +180,28 @@ StopAnimation.TextScaled = true
 StopAnimation.TextSize = 14.000
 StopAnimation.TextWrapped = true
 
+CopyAnimationID.BackgroundColor3 = Color3.fromRGB(131, 131, 131)
+CopyAnimationID.BorderColor3 = Color3.fromRGB(0, 0, 0)
+CopyAnimationID.BorderSizePixel = 0
+CopyAnimationID.Position = UDim2.new(0, 135, 0, 65)
+CopyAnimationID.Size = UDim2.new(0, 65, 0, 18)
+CopyAnimationID.Font = Enum.Font.SourceSansBold
+CopyAnimationID.Text = "Copy ID"
+CopyAnimationID.TextColor3 = Color3.fromRGB(255, 255, 255)
+CopyAnimationID.TextScaled = true
+CopyAnimationID.TextSize = 14.000
+CopyAnimationID.TextWrapped = true
+
+UICorner_7.CornerRadius = UDim.new(0, 2)
+UICorner_7.Parent = CopyAnimationID
+
 UICorner_5.CornerRadius = UDim.new(0, 2)
 UICorner_5.Parent = PlayAnimation
 
+UICorner_5 = UICorner_5:Clone()
 UICorner_5.CornerRadius = UDim.new(0, 2)
 UICorner_5.Parent = StopAnimation
 
-ClearExclusions.Parent = ButtonFrame
 ClearExclusions.BackgroundColor3 = Color3.fromRGB(131, 131, 131)
 ClearExclusions.BorderColor3 = Color3.fromRGB(0, 0, 0)
 ClearExclusions.BorderSizePixel = 0
@@ -217,6 +228,17 @@ CloseButton.Font = Enum.Font.Unknown
 CloseButton.Text = "<b>X</b>"
 CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 CloseButton.TextSize = 14.000
+
+UIListLayout_2.Parent = ButtonFrame
+
+CopyCode.Parent = ButtonFrame
+CopyAnimationID.Parent = ButtonFrame
+ClearLogs.Parent = ButtonFrame
+ClearExclusions.Parent = ButtonFrame
+Exclude.Parent = ButtonFrame
+Unexclude.Parent = ButtonFrame
+PlayAnimation.Parent = ButtonFrame
+StopAnimation.Parent = ButtonFrame
 
 Main.Parent = MainScreenGui
 MainScreenGui.Parent = CoreGui
@@ -336,6 +358,12 @@ CopyCode.Activated:Connect(function()
         if #RawCodeValue > 0 then
             clipboard(RawCodeValue)
         end
+    end
+end)
+
+CopyAnimationID.Activated:Connect(function()
+    if CurrentSelectedAnimation then
+        clipboard(CurrentSelectedAnimation.id)
     end
 end)
 
