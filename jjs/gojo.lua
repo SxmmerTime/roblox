@@ -1,7 +1,9 @@
-local DoUltAnimation = ({...})[1] or true
+local DoUltAnimation = true
+if ({...})[1] == true then DoUltAnimation = false end
+
 local ChatService = game:GetService("Chat")
 local TweenService = game:GetService("TweenService")
-
+print(DoUltAnimation)
 local GojoRaysObject = game:GetObjects("rbxassetid://76757246011623")[1]
 local SniperObject = game:GetObjects("rbxassetid://112334622119806")[1]
 local LocalPlayer = game.Players.LocalPlayer
